@@ -24,7 +24,7 @@ const ContactSection = () => {
 
   const faqs = [// in usUser context its better
     { q: "How do I book a TumaGreen rider?", a: "Simply open our app or website, view available riders on the live map, select the nearest one, and confirm your booking. It's that easy!" },
-    { q: "What types of items can be delivered?", a: "TumaGreen can deliver a wide range of items, from documents and small parcels to food orders and online purchases. Prohibited items are not allowed." },
+    { q: "What types of items can be delivered?", a: "TumaGreen can deliver a wide range of items, but for now we're focused on electronic devices. Prohibited items are not allowed." },
     { q: "Are the delivery fees fixed?", a: "Delivery fees are calculated based on distance and package size. You'll see the transparent pricing before confirming your booking." },
     { q: "How does TumaGreen contribute to sustainability?", a: "Our entire fleet consists of electric vehicles, significantly reducing carbon emissions. We also optimize routes for efficiency, further minimizing environmental impact." },
   ];
