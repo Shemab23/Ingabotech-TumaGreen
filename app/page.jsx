@@ -1,6 +1,4 @@
-'use client'; // This directive is crucial for using useState and other client-side React features
-
-import React, { useState } from 'react'; // Import useState
+'use client';
 import Navbar from "@/components/Navbar";
 import Home from "@/components/Home";
 import HowItWorks from "@/components/HowItWorks";
@@ -10,45 +8,41 @@ import Testimonials from "@/components/Testimonials";
 import About from "@/components/About";
 import ContactUs from "@/components/ContactUs";
 import Footer from "@/components/Footer";
-import LoginPage from "@/components/LoginPage"; // Ensure this import path is correct
+import LoginPage from "@/components/LoginPage";
+
 
 export default function HomePage() {
-  // State to keep track of the currently active "page" or "section"
-  // Default to 'home' to show your initial content
-  const [currentPage, setCurrentPage] = useState('home');
-
-  // Function to render the content based on currentPage state
-  const renderContent = () => {
-    switch (currentPage) {
-      case 'home':
-        return (
-          <>
-            <Home/>
-            <HowItWorks/>
-            <WhyUs/>
-            <Riders/>
-            <Testimonials/>
-            <About/>
-            <ContactUs/> {/* This is your current ContactUs component */}
-          </>
-        );
-      case 'contact':
-        return <ContactUs />; // Render only ContactUs when selected
-      case 'login':
-        return <LoginPage />; // Render LoginPage when selected
-      default:
-        return <Home />; // Fallback to Home
-    }
-  };
+  // const {message} = useUser();
 
   return (
     <div className="flex flex-col w-screen">
-      {/* Pass setCurrentPage down to Navbar so it can change the active page */}
-      <Navbar onNavigate={setCurrentPage} />
-      <div className="flex flex-col w-screen">
-        {renderContent()} {/* Call the function to display the correct content */}
-        <Footer/>
+      <Navbar/>
+      <div className="flex flex-col w-screen ">
+      <Home/>
+      <HowItWorks/>
+      <WhyUs/>
+      <Riders/>
+      <Testimonials/>
+      <About/>
+      <ContactUs/>{/** it is combining with frequently asked question, it is misleading. */}
+      <Footer/>
       </div>
     </div>
+  );
+}
+
+{/* <Image
+          className={styles.logo}
+          src="/next.svg"
+          alt="Next.js logo"
+          width={180}
+          height={38}
+          priority
+        /> */}
+  export default function Login() {
+  return (
+    // The LoginPage component handles its own styling and layout,
+    // including the light green background that spans the full screen.
+    <LoginPage />
   );
 }
