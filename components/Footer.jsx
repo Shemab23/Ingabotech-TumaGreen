@@ -29,6 +29,14 @@ const Footer = () => {
         { label: "Press", href: "#" },
       ],
     },
+
+     {
+      title: " Social Media",
+      links: [
+        { label: "Youtube", href: "#" },
+        { label: "Instagram", href: "#" },
+      ],
+    },
   ];
 
   const scrollToSection = (id) => {
