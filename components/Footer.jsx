@@ -1,5 +1,5 @@
 import React from 'react';
-import { Leaf, Phone, Mail, MapPin as MapPinIcon } from 'lucide-react';
+import { Leaf, Phone, Mail, MapPin as MapPinIcon, Youtube, Instagram } from 'lucide-react'; // Added Youtube and Instagram icons
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -29,12 +29,11 @@ const Footer = () => {
         { label: "Press", href: "#" },
       ],
     },
-
-     {
-      title: " Social Media",
+    {
+      title: "Social Media",
       links: [
-        { label: "Youtube", href: "#" },
-        { label: "Instagram", href: "#" },
+        { label: "Youtube", href: "#", icon: Youtube }, // Added Youtube icon
+        { label: "Instagram", href: "#", icon: Instagram }, // Added Instagram icon
       ],
     },
   ];
@@ -46,12 +45,12 @@ const Footer = () => {
     }
   };
 
-
   return (
     <footer className="bg-green-50 border-t border-green-200 py-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
-          <div className="space-y-4 md:col-span-2 lg:col-span-1">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 mb-8"> {/* Adjusted to lg:grid-cols-5 */}
+          {/* Logo and description section (first column) */}
+          <div className="space-y-4 md:col-span-2 lg:col-span-1"> {/* Retain span for smaller screens */}
             <div className="flex items-center space-x-2">
               <Leaf className="w-8 h-8 text-green-600" />
               <span className="font-orbitron text-2xl font-bold text-green-700">TumaGreen</span>
@@ -62,30 +61,36 @@ const Footer = () => {
             <p className="text-sm text-green-600 font-medium">Live Green. Deliver Smart.</p>
           </div>
 
+          {/* Mapped footer links */}
           {footerLinks.map((section) => (
             <div key={section.title}>
               <p className="font-semibold text-green-800 mb-3">{section.title}</p>
               <ul className="space-y-1.5">
-                {section.links.map((link) => (
-                  <li key={link.label}>
-                    <a
-                      href={link.href}
-                      onClick={(e) => {
-                        if(link.href.startsWith("#")) {
-                           e.preventDefault();
-                           scrollToSection(link.href);
-                        }
-                      }}
-                      className="text-sm text-green-700 hover:text-green-500 hover:underline transition-colors"
-                    >
-                      {link.label}
-                    </a>
-                  </li>
-                ))}
+                {section.links.map((link) => {
+                  const Icon = link.icon; // Get the icon component if it exists
+                  return (
+                    <li key={link.label}>
+                      <a
+                        href={link.href}
+                        onClick={(e) => {
+                          if (link.href.startsWith("#")) {
+                            e.preventDefault();
+                            scrollToSection(link.href);
+                          }
+                        }}
+                        className="text-sm text-green-700 hover:text-green-500 hover:underline transition-colors flex items-center" // Added flex items-center for icon alignment
+                      >
+                        {Icon && <Icon className="w-4 h-4 mr-2 text-green-500" />} {/* Render icon if available */}
+                        {link.label}
+                      </a>
+                    </li>
+                  );
+                })}
               </ul>
             </div>
           ))}
 
+          {/* Contact Us section (now integrated into the grid) */}
           <div>
             <p className="font-semibold text-green-800 mb-3">Contact Us</p>
             <ul className="space-y-2 text-sm">
