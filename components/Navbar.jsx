@@ -14,8 +14,10 @@ const Navbar = () => {
     { label: 'Riders', id: 'become-rider' },
     { label: 'Testimonials', id: 'testimonials' },
     { label: 'About', id: 'about' },
-    { label: 'Contact Us', id: 'contact' }
+    { label: 'Contact Us', id: 'contact' },
+    { label: 'Login', id: 'login' } // <-- Added the Login item here!
   ];
+
   const scrollToSection = (id)=>{
     const el = document.getElementById(id);
     if(el){
@@ -46,13 +48,7 @@ const Navbar = () => {
                 {item.label}
               </motion.button>
             ))}
-            {/* <button
-              className="green-button text-sm font-medium px-4 py-2"
-              onClick={() => scrollToSection('contact')}
-            >
-              Contact Us
-            </button> */}
-          </div>
+            </div>
         </div>
     </nav>
   )
