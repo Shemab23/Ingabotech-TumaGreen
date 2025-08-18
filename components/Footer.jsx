@@ -1,5 +1,8 @@
+'use client'; // Essential for client-side functionality like onClick
+
 import React from 'react';
-import { Leaf, Phone, Mail, MapPin as MapPinIcon, Youtube, Instagram } from 'lucide-react'; // Added Youtube and Instagram icons
+import Link from 'next/link'; // Import Link for routing
+import { Leaf, Phone, Mail, MapPin as MapPinIcon, Youtube, Instagram } from 'lucide-react';
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -8,38 +11,39 @@ const Footer = () => {
     {
       title: "Platform",
       links: [
-        { label: "How It Works", href: "#how-it-works" },
-        { label: "Why TumaGreen", href: "#why-tumagreen" },
-        { label: "For Businesses", href: "#" },
+        { label: "How It Works", id: "how-it-works", type: 'scroll' }, // Scrolls to section
+        { label: "Why TumaGreen", id: "why-tumagreen", type: 'scroll' }, // Scrolls to section
+        { label: "For Businesses", href: "#", type: 'external' }, // Placeholder/external
       ],
     },
     {
       title: "Riders",
       links: [
-        { label: "Become a Rider", href: "#become-rider" },
-        { label: "Rider Benefits", href: "#" },
-        { label: "Safety", href: "#" },
+        { label: "Become a Rider", id: "riders", type: 'scroll' }, // Scrolls to section
+        { label: "Rider Benefits", href: "#", type: 'external' }, // Placeholder/external
+        { label: "Safety", href: "#", type: 'external' }, // Placeholder/external
       ],
     },
     {
       title: "Company",
       links: [
-        { label: "About Us", href: "#about" },
-        { label: "Careers", href: "#" },
-        { label: "Press", href: "#" },
+        { label: "About Us", id: "about", type: 'scroll' }, // Scrolls to section
+        { label: "Careers", href: "#", type: 'external' }, // Placeholder/external
+        { label: "Press", href: "#", type: 'external' }, // Placeholder/external
       ],
     },
     {
       title: "Social Media",
       links: [
-        { label: "Youtube", href: "#", icon: Youtube }, // Added Youtube icon
-        { label: "Instagram", href: "#", icon: Instagram }, // Added Instagram icon
+        { label: "Youtube", href: "#", icon: Youtube, type: 'external' },
+        { label: "Instagram", href: "#", icon: Instagram, type: 'external' },
       ],
     },
   ];
 
+  // Function to scroll to an element with a given ID
   const scrollToSection = (id) => {
-    const element = document.getElementById(id.substring(1)); // remove #
+    const element = document.getElementById(id); // Removed substring(1) as id from navItems is now clean
     if (element) {
       element.scrollIntoView({ behavior: 'smooth' });
     }
@@ -48,9 +52,9 @@ const Footer = () => {
   return (
     <footer className="bg-green-50 border-t border-green-200 py-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 mb-8"> {/* Adjusted to lg:grid-cols-5 */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 mb-8">
           {/* Logo and description section (first column) */}
-          <div className="space-y-4 md:col-span-2 lg:col-span-1"> {/* Retain span for smaller screens */}
+          <div className="space-y-4 md:col-span-2 lg:col-span-1">
             <div className="flex items-center space-x-2">
               <Leaf className="w-8 h-8 text-green-600" />
               <span className="font-orbitron text-2xl font-bold text-green-700">TumaGreen</span>
@@ -67,24 +71,52 @@ const Footer = () => {
               <p className="font-semibold text-green-800 mb-3">{section.title}</p>
               <ul className="space-y-1.5">
                 {section.links.map((link) => {
-                  const Icon = link.icon; // Get the icon component if it exists
-                  return (
-                    <li key={link.label}>
-                      <a
-                        href={link.href}
-                        onClick={(e) => {
-                          if (link.href.startsWith("#")) {
-                            e.preventDefault();
-                            scrollToSection(link.href);
-                          }
-                        }}
-                        className="text-sm text-green-700 hover:text-green-500 hover:underline transition-colors flex items-center" // Added flex items-center for icon alignment
-                      >
-                        {Icon && <Icon className="w-4 h-4 mr-2 text-green-500" />} {/* Render icon if available */}
-                        {link.label}
-                      </a>
-                    </li>
-                  );
+                  const Icon = link.icon;
+                  // Conditionally render Link or regular <a> based on type
+                  if (link.type === 'route') {
+                    return (
+                      <li key={link.label}>
+                        <Link
+                          href={link.href}
+                          className="text-sm text-green-700 hover:text-green-500 hover:underline transition-colors flex items-center"
+                        >
+                          {Icon && <Icon className="w-4 h-4 mr-2 text-green-500" />}
+                          {link.label}
+                        </Link>
+                      </li>
+                    );
+                  } else if (link.type === 'scroll') {
+                    return (
+                      <li key={link.label}>
+                        <button
+                          onClick={(e) => {
+                            // If not on the homepage, navigate to homepage first, then scroll
+                            if (window.location.pathname !== '/') {
+                              window.location.href = `/#${link.id}`; // Force full reload and scroll
+                            } else {
+                              scrollToSection(link.id);
+                            }
+                          }}
+                          className="text-sm text-green-700 hover:text-green-500 hover:underline transition-colors flex items-center bg-transparent border-none p-0 text-left cursor-pointer"
+                        >
+                          {Icon && <Icon className="w-4 h-4 mr-2 text-green-500" />}
+                          {link.label}
+                        </button>
+                      </li>
+                    );
+                  } else { // External or placeholder links
+                    return (
+                      <li key={link.label}>
+                        <a
+                          href={link.href}
+                          className="text-sm text-green-700 hover:text-green-500 hover:underline transition-colors flex items-center"
+                        >
+                          {Icon && <Icon className="w-4 h-4 mr-2 text-green-500" />}
+                          {link.label}
+                        </a>
+                      </li>
+                    );
+                  }
                 })}
               </ul>
             </div>

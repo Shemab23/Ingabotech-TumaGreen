@@ -3,8 +3,7 @@ import { motion } from 'framer-motion';
 import { Mail, Lock, LogIn, User } from 'lucide-react';
 
 // Define the LoginPage component
-// No longer accepts 'id' prop as it's a dedicated page
-const LoginPage = () => {
+const LoginPage = () => { // Removed 'id' from props
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -21,7 +20,7 @@ const LoginPage = () => {
   };
 
   return (
-    // The id prop is removed from here
+    // Removed id={id} from here
     <section className="min-h-screen flex items-center justify-center py-12 px-4 bg-green-100">
       <motion.div
         className="max-w-md w-full p-8 rounded-2xl shadow-xl border-2 border-gray-300 bg-gray-200"

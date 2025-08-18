@@ -1,66 +1,90 @@
 "use client"
-import React from 'react';
-import Link from 'next/link'; // Import the Link component from Next.js
+import React from 'react'
+import Link from 'next/link'; // Import Link for routing
 import Logo from './ui/Logo'
 import { motion } from 'framer-motion'
-// If useUser is only for activeSection in Navbar, and activeSection is based on scroll position,
-// you might reconsider if Navbar needs useUser once it's purely for routing.
-// For now, let's keep it if your actual UserContext provides other relevant data.
-import { useUser } from "@/context/UserContext";
-import { usePathname } from 'next/navigation'; // Import usePathname to highlight active link
+import { useUser } from "@/context/UserContext"; // Keep if used for activeSection logic
+import { usePathname } from 'next/navigation'; // To detect current route for active links
 
 const Navbar = () => {
-    const {activeSection} = useUser(); // This might become redundant for route-based active state
-    const pathname = usePathname(); // Get current path for active link styling
+    const {activeSection} = useUser(); // For highlighting scroll-based sections on the homepage
+    const pathname = usePathname(); // To check the current route (e.g., /login vs /)
 
-    // All nav items will now be 'route' types
     const navItems = [
-        { label: 'Home', href: '/' },
-        { label: 'How It Works', href: '/how-it-works' }, // Assuming you'll create these pages
-        { label: 'Why Us', href: '/why-us' },
-        { label: 'Riders', href: '/riders' },
-        { label: 'Testimonials', href: '/testimonials' },
-        { label: 'About', href: '/about' },
-        { label: 'Contact Us', href: '/contact' },
-        { label: 'Login', href: '/login' } // Your dedicated Login route
+        { label: 'Home', id: 'home', type: 'scroll' }, // Scrolls to section on homepage
+        { label: 'How It Works', id: 'how-it-works', type: 'scroll' },
+        { label: 'Why Us', id: 'why-tumagreen', type: 'scroll' },
+        { label: 'Riders', id: 'riders', type: 'scroll' },
+        { label: 'Testimonials', id: 'testimonials', type: 'scroll' },
+        { label: 'About', id: 'about', type: 'scroll' },
+        { label: 'Contact Us', id: 'contact', type: 'scroll' },
+        { label: 'Login', href: '/login', type: 'route' } // Navigates to a separate page
     ];
 
-    // scrollToSection is no longer needed in Navbar for page navigation
-    // It would only be relevant if Home or other pages still had internal scroll sections.
-    // If you still have internal scroll sections on a given page, the page component itself
-    // would handle that logic.
+    // Function to scroll to an element with a given ID
+    const scrollToSection = (id)=>{
+      const el = document.getElementById(id);
+      if(el){
+        el.scrollIntoView({behavior: 'smooth'});
+      }
+    }
 
     return (
         <nav className="fixed top-0 w-full z-50 bg-gray-200/90 border-b border-green-100">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between">
                 <div className="flex justify-between items-center h-16">
-                    <Logo/>
+                    {/* Logo acts as a link to home, handled by next/link */}
+                    <Link href="/" className="text-white text-2xl font-bold">
+                        <Logo/>
+                    </Link>
                 </div>
                 <div className="hidden md:flex items-center space-x-6">
                 {navItems.map((item, index) => {
-                    // Determine if the current link is active
-                    const isActive = (item.href === '/' && pathname === '/') ||
-                                     (item.href !== '/' && pathname.startsWith(item.href));
+                    // Determine if the current link is active for styling
+                    // For scroll items, use activeSection from context
+                    // For route items, use pathname
+                    const isActive = item.type === 'scroll'
+                        ? activeSection === item.id && pathname === '/' // Only active if on homepage AND section matches
+                        : pathname === item.href; // Active if on the specific route
 
                     return (
                         <motion.li
-                            key={item.label}
+                            key={item.label} // Using label as key for consistency
                             initial={{ opacity: 0, y: -15 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.4, delay: index * 0.05 }}
                             className="list-none" // Remove default list-item styling
                         >
-                            <Link
-                                href={item.href}
-                                // Use isActive for styling
-                                className={`text-sm font-medium transition-colors hover:text-green-600 ${
-                                  isActive
-                                    ? 'text-green-600 underline underline-offset-4 decoration-2 decoration-green-500 font-semibold text-lg'
-                                    : 'text-green-700 font-semibold text-md'
-                                }`}
-                            >
-                                {item.label}
-                            </Link>
+                            {item.type === 'route' ? (
+                                <Link
+                                    href={item.href}
+                                    className={`text-sm font-medium transition-colors hover:text-green-600 ${
+                                      isActive
+                                        ? 'text-green-600 underline underline-offset-4 decoration-2 decoration-green-500 font-semibold text-lg'
+                                        : 'text-green-700 font-semibold text-md'
+                                    }`}
+                                >
+                                    {item.label}
+                                </Link>
+                            ) : (
+                                <button
+                                    onClick={() => {
+                                      // If not on the homepage, navigate to homepage first, then scroll
+                                      if (pathname !== '/') {
+                                        window.location.href = `/#${item.id}`; // Force full reload and scroll
+                                      } else {
+                                        scrollToSection(item.id);
+                                      }
+                                    }}
+                                    className={`text-sm font-medium transition-colors hover:text-green-600 ${
+                                      isActive
+                                        ? 'text-green-600 underline underline-offset-4 decoration-2 decoration-green-500 font-semibold text-lg'
+                                        : 'text-green-700 font-semibold text-md'
+                                    }`}
+                                >
+                                    {item.label}
+                                </button>
+                            )}
                         </motion.li>
                     );
                 })}
