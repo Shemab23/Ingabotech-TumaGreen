@@ -1,5 +1,5 @@
 
-import { Geist, Geist_Mono } from "next/font/google";
+/*import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
 import { UserProvider } from "@/context/UserContext";
@@ -29,4 +29,31 @@ export default function RootLayout({ children }) {
       </body>
     </html>
   );
+}*/
+
+
+
+// app/layout.js
+import './globals.css'; // Assuming your global styles are here
+
+// Import your Navbar and Footer components
+import Navbar from '@/components/Navbar';
+import Footer from '@/components/Footer';
+
+// Define the root layout component
+export default function RootLayout({ children }) {
+  return (
+    <html lang="en">
+      <body className="flex flex-col min-h-screen">
+        {/* The Navbar will now appear on all pages */}
+        <Navbar />
+        <main className="flex-grow"> {/* main tag to ensure content fills space */}
+          {children} {/* This is where your individual page content (HomePage or LoginPage) will be rendered */}
+        </main>
+        {/* The Footer will also appear on all pages */}
+        <Footer />
+      </body>
+    </html>
+  );
 }
+

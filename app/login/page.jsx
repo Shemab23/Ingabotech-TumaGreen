@@ -1,11 +1,10 @@
-'use client'; // This directive is necessary for client-side components like LoginPage
+// app/login/page.jsx
+'use client';
 
-import LoginPage from '@/components/LoginPage'; // Adjust the import path if your LoginPage.jsx is not directly in 'components'
+import LoginPage from '@/components/LoginPage';
 
 export default function Login() {
   return (
-    // The LoginPage component handles its own styling and layout,
-    // including the light green background that spans the full screen.
     <LoginPage />
   );
 }

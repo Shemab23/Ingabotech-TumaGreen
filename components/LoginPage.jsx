@@ -3,8 +3,8 @@ import { motion } from 'framer-motion';
 import { Mail, Lock, LogIn, User } from 'lucide-react';
 
 // Define the LoginPage component
-// Ensure the root element has id="login" for the Navbar's scrollToSection to work
-const LoginPage = ({ id }) => { // Added 'id' as a prop
+// No longer accepts 'id' prop as it's a dedicated page
+const LoginPage = () => {
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -21,8 +21,8 @@ const LoginPage = ({ id }) => { // Added 'id' as a prop
   };
 
   return (
-    // The id prop is passed here to the outermost section
-    <section id={id} className="min-h-screen flex items-center justify-center py-12 px-4 bg-green-100">
+    // The id prop is removed from here
+    <section className="min-h-screen flex items-center justify-center py-12 px-4 bg-green-100">
       <motion.div
         className="max-w-md w-full p-8 rounded-2xl shadow-xl border-2 border-gray-300 bg-gray-200"
         initial={{ opacity: 0, scale: 0.9 }}
