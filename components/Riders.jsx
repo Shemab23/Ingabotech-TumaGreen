@@ -11,16 +11,18 @@ const BecomeRiderSection = () => {
     fullName: '',
     phone: '',
     email: '',
-    vehicleType: 'Electric Motorcycle',
-    hasLicense: false,
+    vehicleType: '',
+    drivingLicense: null,
+    profileImage: null,
+    agreeLicense: false,
     agreeTerms: false,
   });
 
   const handleChange = (e) => {
-    const { name, value, type, checked } = e.target;
+    const { name, value, type, checked, files } = e.target;
     setFormData(prev => ({
       ...prev,
-      [name]: type === 'checkbox' ? checked : value
+      [name]: type === 'checkbox' ? checked : type === 'file' ? files[0] : value
     }));
   };
 
@@ -37,7 +39,6 @@ const BecomeRiderSection = () => {
   ];
 
   const displayedRiders = riders.slice(0, 2);
-
 
   return (
     <section id="become-rider" className="py-16 sm:py-20 bg-green-50">
@@ -69,10 +70,10 @@ const BecomeRiderSection = () => {
             <h3 className="text-2xl sm:text-3xl font-semibold text-green-800 mb-2 text-center lg:text-left">Meet Our Top Riders</h3>
             <div className="grid md:grid-cols-2 gap-6">
               {displayedRiders.map(rider => (
-                <RiderCard key={rider.id} rider={rider}/>
+                <RiderCard key={rider.id} rider={rider} />
               ))}
             </div>
-             <div className="mt-6">
+            <div className="mt-6">
               <h3 className="text-xl sm:text-2xl font-semibold text-green-800 mb-4 text-center lg:text-left">Why Ride With TumaGreen?</h3>
               <ul className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {benefits.map((benefit, index) => (
@@ -93,48 +94,98 @@ const BecomeRiderSection = () => {
             transition={{ duration: 0.7 }}
             viewport={{ once: true }}
           >
-            <h3 className="text-xl sm:text-2xl font-semibold text-green-800 mb-5  text-black text-center">Apply Now</h3>
+            <h3 className="text-xl sm:text-2xl font-semibold text-green-800 mb-5 text-black text-center">Apply Now</h3>
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
-                <label htmlFor="fullName" className="font-semibold text-black  text-md">Full Name</label>
-                <input type="text" name="fullName" id="fullName" value={formData.fullName} onChange={handleChange} placeholder='Enter your full-name' required className="mt-1 px-4 border border-green-800/40 shadow-lg bg-gray-100/60 w-full text-sm " />
+                <label htmlFor="fullName" className="font-semibold text-black text-md">Full Name</label>
+                <input
+                  type="text"
+                  name="fullName"
+                  id="fullName"
+                  value={formData.fullName}
+                  onChange={handleChange}
+                  placeholder='Enter your full-name'
+                  required
+                  className="mt-1 px-4 py-2 border border-green-800/40 rounded-lg shadow-inner bg-gray-100/60 w-full text-sm placeholder-gray-500"
+                />
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label htmlFor="phone" className="font-semibold text-md  text-black ">Phone</label>
-                  <input type="tel" name="phone" id="phone" placeholder='+250 7********' value={formData.phone} onChange={handleChange} required className="mt-1 shadow-lg  border border-green-800/40 px-4 bg-gray-100/60 w-full text-sm" />
+                  <label htmlFor="phone" className="font-semibold text-md text-black">Phone</label>
+                  <input
+                    type="tel"
+                    name="phone"
+                    id="phone"
+                    placeholder='+250 7********'
+                    value={formData.phone}
+                    onChange={handleChange}
+                    required
+                    className="mt-1 px-4 py-2 shadow-inner border border-green-800/40 rounded-lg bg-gray-100/60 w-full text-sm placeholder-gray-500"
+                  />
                 </div>
                 <div>
-                  <label htmlFor="email" className="font-semibold text-md  text-black ">Email</label>
-                  <input type="email" name="email" placeholder='your@email' id="email" value={formData.email} onChange={handleChange} required className="mt-1 px-4 border border-green-800/40 shadow-lg bg-gray-100/60 w-full text-sm" />
+                  <label htmlFor="email" className="font-semibold text-md text-black">Email</label>
+                  <input
+                    type="email"
+                    name="email"
+                    placeholder='your@email'
+                    id="email"
+                    value={formData.email}
+                    onChange={handleChange}
+                    required
+                    className="mt-1 px-4 py-2 border border-green-800/40 rounded-lg shadow-inner bg-gray-100/60 w-full text-sm placeholder-gray-500"
+                  />
                 </div>
               </div>
               <div>
-                <label htmlFor="vehicleType" className="font-semibold text-md  text-black ">Vehicle Type</label>
-                <select
+                <label htmlFor="vehicleType" className="font-semibold text-md text-black">Vehicle Type</label>
+                <input
+                  type="text"
                   name="vehicleType"
                   id="vehicleType"
                   value={formData.vehicleType}
                   onChange={handleChange}
+                  placeholder='e.g., Electric Motorcycle'
                   required
-                  className="mt-1 border border-green-800/40 shadow-lg bg-gray-100/60 w-full text-sm"
-                >
-                  <option>Electric Motorcycle</option>
-                  <option>Electric Scooter</option>
-                  <option>Electric Van</option>
-                  <option>Electric Taxi</option>
-                </select>
+                  className="mt-1 px-4 py-2 border border-green-800/40 rounded-lg shadow-inner bg-gray-100/60 w-full text-sm placeholder-gray-500"
+                />
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label htmlFor="drivingLicense" className="font-semibold text-md text-black">Driving Licence</label>
+                  <input
+                    type="file"
+                    name="drivingLicense"
+                    id="drivingLicense"
+                    onChange={handleChange}
+                    required
+                    className="mt-1 px-4 py-2 border border-green-800/40 rounded-lg shadow-inner bg-gray-100/60 w-full text-sm file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-green-50 file:text-green-700 hover:file:bg-green-100 cursor-pointer"
+                  />
+                </div>
+                <div>
+                  <label htmlFor="profileImage" className="font-semibold text-md text-black">Profile Image <span className="text-gray-500 font-normal">(optional)</span></label>
+                  <input
+                    type="file"
+                    name="profileImage"
+                    id="profileImage"
+                    onChange={handleChange}
+                    className="mt-1 px-4 py-2 border border-green-800/40 rounded-lg shadow-inner bg-gray-100/60 w-full text-sm file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-green-50 file:text-green-700 hover:file:bg-green-100 cursor-pointer"
+                  />
+                </div>
               </div>
               <div className="flex items-start space-x-2 pt-1">
-                <input type='checkbox' id="hasLicense" name="hasLicense" checked={formData.hasLicense} onChange={handleChange} className="mt-1  cursor-pointer"/>
-                <label htmlFor="hasLicense" className="text-xs font-normal text-green-700">I have a valid Rwandan driving license for this vehicle type.</label>
+                <input type='checkbox' id="agreeLicense" name="agreeLicense" checked={formData.agreeLicense} onChange={handleChange} required className="mt-1 cursor-pointer" />
+                <label htmlFor="agreeLicense" className="text-xs font-normal text-green-700">I submit a valid, update driving License.</label>
               </div>
               <div className="flex items-start space-x-2">
-                <input type='checkbox'  id="agreeTerms" name="agreeTerms" checked={formData.agreeTerms} onChange={handleChange} required className="mt-1  cursor-pointer"/>
-                <label htmlFor="agreeTerms" className="text-xs font-normal text-green-700 ">I agree to the TumaGreen rider terms and conditions.</label>
+                <input type='checkbox' id="agreeTerms" name="agreeTerms" checked={formData.agreeTerms} onChange={handleChange} required className="mt-1 cursor-pointer" />
+                <label htmlFor="agreeTerms" className="text-xs font-normal text-green-700">I agree to the TumaGreen rider terms and conditions.</label>
               </div>
-              <button type="submit" className="w-full flex justify-center  bg-green-600 font-medium py-2.5 text-white rounded-lg">
-                <Send className="w-4 h-4 mr-2"/> Submit Application
+              <button
+                type="submit"
+                className="w-full flex justify-center items-center bg-green-600 font-medium py-2.5 text-white rounded-lg shadow-md hover:bg-green-700 transition-colors"
+              >
+                <Send className="w-4 h-4 mr-2" /> Submit Application
               </button>
             </form>
           </motion.div>
